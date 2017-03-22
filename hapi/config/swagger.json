@@ -1,0 +1,361 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Club de Préstamos API",
+    "description": "Club de Préstamos",
+    "version": "1.0.0"
+  },
+  "host": "localhost",
+  "produces": [
+    "application/json"
+  ],
+  "basePath": "/",
+  "securityDefinitions": {
+    "jwt": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "paths": {
+    "auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "authenticates a user and returns an access token",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "email and password",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LoginParams"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful authentication",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string",
+                  "description": "authorization token for subsequent calls"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "tags": [
+          "User"
+        ],
+        "summary": "get user list",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "query",
+            "description": "Filter. e.g. prop1:value,prop2:value ...",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "fields",
+            "description": "Fields returned. e.g. prop1,prop2 ...",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "sortby",
+            "description": "Sorted-by fields. e.g. prop1,prop2 ...",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "description": "Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc ...",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The number of resources by page. Default value is 20. Must be an integer",
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "description": "Page number of result set. Must be an integer",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful get list of users",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "results": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/User"
+                  },
+                  "maxItems": 20
+                },
+                "meta": {
+                  "$ref": "#/definitions/PaginationMeta"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "server error",
+            "schema": "#/definitions/Error"
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "tags": [
+          "User"
+        ],
+        "summary": "creates a user",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "user data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "user created",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "default": {
+            "description": "server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "patch": {
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "summary": "update a user",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "the user id.",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "user data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "the updated user",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "default": {
+            "description": "server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "summary": "get a user by id.",
+        "description": "get a user by id",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "the user id",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "the user with the given id",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "default": {
+            "description": "server error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Error": {
+      "type": "object",
+      "properties": {
+        "statusCode": {
+          "type": "string",
+          "description": "The http statues code."
+        },
+        "code": {
+          "type": "string",
+          "description": "The error code that refers the error type."
+        },
+        "message": {
+          "type": "string",
+          "description": "The error message."
+        }
+      }
+    },
+    "LoginParams": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "account profile email address"
+        },
+        "password": {
+          "type": "string",
+          "description": "account password"
+        }
+      }
+    },
+    "User": {
+      "title": "User",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "signupDate": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "PaginationMeta": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "description": "The number of rows returned. Default name is count. Enabled by default.",
+          "default": 20
+        },
+        "totalCount": {
+          "type": "integer",
+          "description": "The total numbers of rows available. Default name is totalCount. Enabled by default.",
+          "default": 100
+        },
+        "pageCount": {
+          "type": "integer",
+          "description": "The total number of pages available. Default name is pageCount, enabled by default.",
+          "default": 5
+        },
+        "self": {
+          "type": "string",
+          "description": "The link to the requested page. Default name is self, enabled by default.",
+          "default": "http://resource.url?page=2"
+        },
+        "previous": {
+          "type": "string",
+          "description": "The link to the previous page. Default name is previous, enabled by default. null if no previous page is available.",
+          "default": "http://resource.url?page=1"
+        },
+        "next": {
+          "type": "string",
+          "description": "Same than previous but with next page.",
+          "default": "http://resource.url?page=3"
+        },
+        "first": {
+          "type": "string",
+          "description": "Same than previous but with first page.",
+          "default": "http://resource.url?page=1"
+        },
+        "last": {
+          "type": "string",
+          "description": "Same than previous but with last page.",
+          "default": "http://resource.url?page=5"
+        },
+        "page": {
+          "type": "integer",
+          "description": "The page number requested. Default name is page, disabled by default.",
+          "default": 2
+        },
+        "limit": {
+          "type": "integer",
+          "description": "The limit requested. Default name is limit, disabled by default.",
+          "default": 20
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "name": "clubdeprestamos",
+  "version": "1.0.0",
+  "description": "This is for bussiness",
+  "main": "./server.js",
+  "scripts": {
+    "start": "nodemon -L --delay 500ms .",
+    "test": "NODE_ENV=test ./node_modules/.bin/tape -r babel-register tests/**/*.js",
+    "cover": "./node_modules/.bin/istanbul cover ./node_modules/.bin/tape -r babel-register tests/**/*.js",
+    "lint": "eslint .",
+    "formatter": "esformatter -i --ignore-dir=./node_modules './**/*.js'",
+    "regenerate": "yo swaggerize:test --framework hapi --apiPath './config/swagger.json'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Merkadeus/clubdeprestamos.git"
+  },
+  "author": "Merkadeus - Randall Sánchez A.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Merkadeus/clubdeprestamos/issues"
+  },
+  "homepage": "https://github.com/Merkadeus/clubdeprestamos#readme",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "good": "^7.1.0",
+    "good-console": "^6.4.0",
+    "hapi": "^16.1.0",
+    "hapi-auth-jwt2": "^7.2.4",
+    "hapi-pagination": "^1.15.0",
+    "hapi-swaggered-ui": "^2.6.0",
+    "inert": "^4.1.0",
+    "is-my-json-valid": "^2.16.0",
+    "lodash": "^4.17.4",
+    "pg": "^6.1.5",
+    "swagger-parser": "^3.4.1",
+    "swagger-to-raml-object": "0.0.6",
+    "swaggerize-hapi": "^2.0.1",
+    "swagmock": "https://github.com/gaboesquivel/swagmock.git#fix-max",
+    "tape": "^4.6.3",
+    "vision": "^4.1.1"
+  },
+  "devDependencies": {
+    "babel-register": "^6.24.0",
+    "esformatter": "^0.10.0",
+    "esformatter-add-trailing-commas": "^1.1.0",
+    "esformatter-quote-props": "^2.0.0",
+    "esformatter-semicolons": "^1.1.2",
+    "esformatter-spaced-lined-comment": "^2.0.1",
+    "eslint": "^3.18.0",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "istanbul": "^0.4.5",
+    "js-yaml": "^3.8.2",
+    "supertest": "^3.0.0"
+  }
+}
