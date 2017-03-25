@@ -7,6 +7,7 @@ const swaggerize = require('swaggerize-hapi');
 const authJwt = require('hapi-auth-jwt2');
 const path = require('path');
 const vision = require('vision');
+const env = require('env2')('./.env');
 
 const server = new hapi.Server({
   connections: {
@@ -16,21 +17,10 @@ const server = new hapi.Server({
   },
 });
 
-let config = {
-  port: 3000,
+server.connection({
+  port: process.env.PORT || 3000,
   labels: ['api'],
-  host: 'localhost',
-};
-
-if (process.env.NODE_ENV === 'develop') {
-  config = {
-    port: 3000,
-    labels: ['api'],
-    host: 'localhost',
-  };
-}
-
-server.connection(config);
+});
 
 const validate = (decoded, request, cb) => {
   console.log('============ validate ================');
@@ -56,7 +46,7 @@ server.register(authJwt, (err) => {
   server.register({
     register: swaggerize,
     options: {
-      api: path.resolve('./hapi/config/swagger.json'),
+      api: path.resolve('./config/swagger.json'),
       handlers: path.resolve('./handlers'),
       docspath: '/swagger',
       cors: true,
@@ -72,7 +62,7 @@ server.register(authJwt, (err) => {
           },
         },
         routes: {
-          include: ['/users', '/products', '/categories', '/saleschannels', '/orders', '/photos', '/catalogs'],
+          include: ['/users'],
           exclude: ['/', '/docs'],
         },
         meta: {
@@ -86,11 +76,11 @@ server.register(authJwt, (err) => {
         },
       },
     },
-      (error) => {
-        if (error) {
-          throw error;
-        }
-      });
+    (error) => {
+      if (error) {
+        throw error;
+      }
+    });
 
     server.start(() => {
       const host = process.env.HOST || server.info.host;

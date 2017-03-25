@@ -1,9 +1,10 @@
 /* eslint-disable consistent-return, no-console*/
 const pg = require('pg');
 const _ = require('lodash');
+const pgConfig = require('./pg_config.js');
 
 const Postgresql = (query, cb) => {
-  const pool = new pg.Pool();
+  const pool = new pg.Pool(pgConfig);
   pool.connect((err, client, done) => {
     if (err) {
       return console.log('CONNECTION ERROR:', err);
