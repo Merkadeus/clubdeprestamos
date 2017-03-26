@@ -7,7 +7,7 @@ const swaggerize = require('swaggerize-hapi');
 const authJwt = require('hapi-auth-jwt2');
 const path = require('path');
 const vision = require('vision');
-const env = require('env2')('./.env');
+const env = require('env2')('./.env'); // eslint-disable-line no-unused-vars
 
 const server = new hapi.Server({
   connections: {
@@ -25,6 +25,7 @@ server.connection({
 const validate = (decoded, request, cb) => {
   console.log('============ validate ================');
   console.log(decoded);
+  console.log(request.info);
   console.log('=======================================');
 
   return cb(null, true);
@@ -39,7 +40,7 @@ server.register(authJwt, (err) => {
       key: process.env.JWTSECRET || 'NeverShareYourSecret',
       validateFunc: validate,
       verifyOptions: {
-        algorithms: ['HS256'],
+        algorithms: [process.env.JWTALGORITHM],
       },
     });
 
@@ -108,7 +109,7 @@ server.register([
     if (err) {
       throw err;
     }
-  }
+  } // eslint-disable-line comma-dangle
 );
 
 server.route({

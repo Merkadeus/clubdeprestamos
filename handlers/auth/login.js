@@ -1,12 +1,33 @@
-/**
- * Operations on /auth/login
- */
+const dataProvider = require('../../data/auth/login');
+const generateToken = require('../users_token');
+const Promise = require('bluebird');
+const _ = require('lodash');
+const Boom = require('boom');
+
 module.exports = {
-  post: (req, reply) => {
+  post: (req, reply, next) => {
     const status = 200;
-    const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6IkFudGhvbnkgVmFsaWQgVXNlciIsImlhdCI6MTQyNTQ3MzUzNX0.KA68l60mjiC8EXaC2odnjFwdIDxE__iDu5RwLdN1F2A'; // eslint-disable-line max-len
-    reply({
-      token,
-    }).code(status);
+    const provider = Promise.promisify(dataProvider.post['200']);
+    provider(req, reply)
+      .then((data) => {
+        if (data.length) {
+          _.assign(data[0], {
+            token: generateToken(data[0]),
+          });
+          data[0] = _.omit(data[0], ['password']);
+          const response = {
+            responses: {
+              results: data,
+            },
+          };
+          req.totalCount = data.length ? response.responses.results.length : 0;
+          reply(data && response.responses).code(status);
+        } else {
+          reply(Boom.unauthorized('Invalid password or email!'));
+        }
+      })
+      .catch((err) => {
+        next(err);
+      });
   },
 };
