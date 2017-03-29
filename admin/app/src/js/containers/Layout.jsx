@@ -1,10 +1,13 @@
 import React from 'react';
-import HeaderBar from '../components/header-bar';
+import Header from '../components/Header';
 
+import '../../style/index.scss';
 const Layout = ({ children }) => (
   <div>
-    <HeaderBar />
-    { children }
+    <Header />
+    <div className="layout">
+      { children }
+    </div>
   </div>
 );
 

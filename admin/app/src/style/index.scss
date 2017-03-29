@@ -1,15 +1,18 @@
-body {
-  margin: 0;
-  padding: 0;
-}
-.header-bar .ui.attached.header{
-  color: #FFFFFF;
-  background-color: #66AFE9;
+@import 'reset';
+
+.layout {
+  width: 90%;
+  margin: 0 auto;
+  padding-top: 1rem;
 }
 
-.form-wrapper{
-  width: 78%;
-  margin:0 auto;
-  padding-top: 15vh;
-  text-align: center;
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .box {
+    display: flex;
+    flex-direction: column;
+    max-width: 50%;
+  }
 }

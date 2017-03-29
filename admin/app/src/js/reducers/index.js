@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
 import { routerReducer as routing } from 'react-router-redux';
 
-import kiosk from './kiosk';
+import User from './User';
+import LeftDrawer from './LeftDrawer';
 
 const rootReducer = combineReducers({
-  kiosk,
+  User,
+  LeftDrawer,
   routing,
 });
 
