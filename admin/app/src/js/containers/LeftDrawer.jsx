@@ -10,7 +10,11 @@ class LeftDrawer extends Component {
   render() {
     return (
       <div>
-        <DrawerMenu open={ this.props.drawerView } toggleDrawer={ () => this.props.toggleDrawer() } />
+        <DrawerMenu
+          open={ this.props.drawerView }
+          toggleDrawer={ () => this.props.toggleDrawer() }
+          user={ this.props.user }
+        />
       </div>
     );
   }
@@ -18,8 +22,8 @@ class LeftDrawer extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		isAuth: state.User.auth,
-    drawerView: state.LeftDrawer.drawerView,
+		user: state.user.user,
+    drawerView: state.leftDrawer.drawerView,
 	};
 };
 

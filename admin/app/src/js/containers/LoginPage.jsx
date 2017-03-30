@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import LoginBox from '../components/LoginBox';
 import { login } from '../actions';
@@ -6,6 +7,16 @@ import { login } from '../actions';
 class LoginPage extends Component {
   constructor() {
     super();
+  }
+  componentWillMount() {
+    if (sessionStorage.getItem('auth')) {
+      browserHistory.push('/dashboard');
+    }
+  }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.auth) {
+      browserHistory.push('/dashboard');
+    }
   }
   render() {
     return (
@@ -18,7 +29,7 @@ class LoginPage extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		user: state.user,
+		auth: state.user.auth,
 	};
 };
 
