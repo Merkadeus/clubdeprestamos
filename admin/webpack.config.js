@@ -55,6 +55,15 @@ module.exports = {
 	context: __dirname,
 	target: 'web',
 	plugins: DEBUG ? [
+			new webpack.LoaderOptionsPlugin({
+				options: {
+					historyApiFallback: {
+						rewrites: [
+							{ from: /./, to: '/' },
+						],
+					},
+				},
+			}),
 			new ExtractTextPlugin({
 				filename: 'style/bundle.css',
 				disable: false,

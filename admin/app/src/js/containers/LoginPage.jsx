@@ -9,7 +9,7 @@ class LoginPage extends Component {
     super();
   }
   componentWillMount() {
-    if (sessionStorage.getItem('auth')) {
+    if (sessionStorage.getItem('auth') && this.props.auth) {
       browserHistory.push('/dashboard');
     }
   }

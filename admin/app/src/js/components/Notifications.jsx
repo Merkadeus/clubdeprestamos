@@ -49,8 +49,8 @@ class Notifications extends Component {
     const investorsNotifications = this.props.newInvestors ? investorBadge : '';
     return (
       <div>
+				{ investorsNotifications }
         { loansNotifications }
-        { investorsNotifications }
       </div>
     );
   }
