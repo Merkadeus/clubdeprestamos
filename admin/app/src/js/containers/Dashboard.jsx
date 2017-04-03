@@ -7,8 +7,11 @@ import Notifications from '../components/Notifications';
 import SecondaryAppBar from '../components/SecondaryAppBar';
 import InfoBox from '../components/InfoBox';
 import { cyan500, pink600, green500 } from 'material-ui/styles/colors';
-import { setReadInvestors, setReadLoans } from '../actions';
+import { selectPage, setReadLoans } from '../actions';
 
+const propTypes = {
+	children: PropTypes.any,
+};
 class Dashboard extends Component {
   constructor() {
     super();
@@ -20,6 +23,7 @@ class Dashboard extends Component {
     if (!sessionStorage.getItem('auth') && !this.props.auth) {
       browserHistory.push('/');
     }
+		this.props.selectPage();
   }
 	componentWillReceiveProps(nextProps) {
 		if (!sessionStorage.getItem('auth') && !this.props.auth) {
@@ -30,7 +34,7 @@ class Dashboard extends Component {
     const contentAppBar = (
       <Notifications
 				newInvestors={ this.props.newInvestors }
-				onclickInvestors={ () => this.props.setReadInvestors() }
+				onclickInvestors={ () => browserHistory.push('/dashboard/investors') }
 				newLoans={ this.props.newLoans }
         onclickLoans={ () => this.props.setReadLoans() }
       />
@@ -41,7 +45,7 @@ class Dashboard extends Component {
 				color: cyan500,
 				title: 'Inversionistas',
 				content: '500',
-				goTo: '/investors',
+				goTo: '/dashboard/investors',
 			},
 			{
 				icon: 'fa-money',
@@ -72,8 +76,9 @@ class Dashboard extends Component {
 		});
     return (
       <div className="dashboard-page">
-        <SecondaryAppBar title="Dashboard" content= { contentAppBar } />
+        <SecondaryAppBar title={ this.props.page } content= { contentAppBar } />
 				<div className="info-boxes">{ infoBoxes }</div>
+				{ this.props.children }
       </div>
     );
   }
@@ -83,19 +88,22 @@ Dashboard.childContextTypes = {
   muiTheme: PropTypes.object.isRequired,
 };
 
+Dashboard.propTypes = propTypes;
+
 const mapStateToProps = (state) => {
   return {
     auth: state.user.auth,
     newInvestors: state.investors.pending,
     newLoans: state.loans.pending,
+		page: state.general.selectedPage,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setReadInvestors() {
-      return dispatch(setReadInvestors());
-    },
+		selectPage() {
+			return dispatch(selectPage('Dashboard'));
+		},
     setReadLoans() {
       return dispatch(setReadLoans());
     },

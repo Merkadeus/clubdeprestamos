@@ -14,3 +14,8 @@ export const CLEAR_INVESTORS = 'CLEAR_INVESTORS';
 export const SET_LOANS = 'SET_LOANS';
 export const SET_READ_LOANS = 'SET_READ_LOANS';
 export const CLEAR_LOANS = 'CLEAR_LOANS';
+
+export const SELECT_PAGE = 'SELECT_PAGE';
+
+export const SET_DATA_TABLE_DATA = 'SET_DATA_TABLE_DATA';
+export const CLEAR_DATA_TABLE_DATA = 'CLEAR_DATA_TABLE_DATA';

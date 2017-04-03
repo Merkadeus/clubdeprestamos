@@ -96,3 +96,36 @@ export function clearLoans() {
     });
   };
 }
+
+export function selectPage(selectedPage) {
+	return dispatch => {
+		dispatch({
+			type: types.SELECT_PAGE,
+			payload: {
+				selectedPage,
+			},
+		});
+	};
+}
+
+export function setDataTableData(data) {
+	return dispatch => {
+		dispatch({
+			type: types.SET_DATA_TABLE_DATA,
+			payload: {
+				data,
+			},
+		});
+	};
+}
+
+export function clearDataTableData() {
+	return dispatch => {
+		dispatch({
+			type: types.CLEAR_DATA_TABLE_DATA,
+			payload: {
+				data: [],
+			},
+		});
+	};
+}

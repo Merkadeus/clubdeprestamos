@@ -1,8 +1,7 @@
 import * as types from '../actions/actionsTypes';
 
 const initialState = {
-  pending: 5,
-	investors: [
+  data: [
 		{
 			id: 1,
 			name: 'Randall',
@@ -55,22 +54,17 @@ const initialState = {
 	],
 };
 
-function User(state = initialState, action) {
+function DataTables(state = initialState, action) {
   switch (action.type) {
-    case types.SET_INVESTORS :
-    case types.CLEAR_INVESTORS :
+    case types.SET_DATA_TABLE_DATA :
+		case types.CLEAR_DATA_TABLE_DATA :
       return {
         ...state,
         ...action.payload,
-      };
-    case types.SET_READ_INVESTORS :
-      return {
-        ...state,
-        pending: 0,
       };
     default:
       return state;
   }
 }
 
-export default User;
+export default DataTables;
